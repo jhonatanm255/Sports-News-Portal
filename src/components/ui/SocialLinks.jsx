@@ -11,7 +11,7 @@ const SocialLinks = () => {
     <div className="flex space-x-4">
       {/* Facebook */}
       <a
-        href="https://facebook.com"
+        href="https://www.facebook.com/profile.php?id=61571413462228"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Facebook"
@@ -22,7 +22,7 @@ const SocialLinks = () => {
 
       {/* TikTok */}
       <a
-        href="https://tiktok.com"
+        href="https://www.tiktok.com/@lanewssports?_t=ZT-8udOwwuRhq2&_r=1"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="TikTok"
@@ -33,7 +33,7 @@ const SocialLinks = () => {
 
       {/* Instagram */}
       <a
-        href="https://instagram.com"
+        href="https://www.instagram.com/lanewssports?igsh=MzRlODBiNWFlZA%3D%3D"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Instagram"
@@ -44,7 +44,7 @@ const SocialLinks = () => {
 
       {/* X (Twitter) */}
       <a
-        href="https://twitter.com"
+        href="https://x.com/LANEWSSPORTS1?t=jWDZnaK0goGI3NjIgFpbVw&s=08"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="X (Twitter)"
