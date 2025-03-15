@@ -2,6 +2,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import FeaturedArticles from '../components/ui/FeaturedArticles'
 import LatestArticles from '../components/ui/LatestArticles'
+import TwitterFeed from '../components/ui/TwitterFeed'
 
 const HomePage = () => {
   return (
@@ -14,9 +15,22 @@ const HomePage = () => {
         />
       </Helmet>
 
-      <div>
-        <FeaturedArticles />
-        <LatestArticles />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[75%_25%]">
+        <div>
+          <FeaturedArticles />
+          <LatestArticles />
+        </div>
+        <div className="mt-14">
+          <TwitterFeed
+            accounts={[
+              "@UEFA",
+              "@sport",
+              "@WTA",
+              "@BBCWorld",
+              "@CNN",
+            ]}
+          />
+        </div>
       </div>
     </>
   );

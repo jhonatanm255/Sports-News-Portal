@@ -13,28 +13,29 @@ const ArticleCard = ({ article, size = 'md' }) => {
     'Fecha no disponible'
   
   // Different card sizes
-  const cardSizes = {
-    sm: {
-      container: 'flex flex-col h-full',
-      image: 'h-40',
-      title: 'text-lg font-bold line-clamp-2'
-    },
-    md: {
-      container: 'flex flex-col h-full',
-      image: 'h-48',
-      title: 'text-xl font-bold line-clamp-2'
-    },
-    lg: {
-      container: 'flex flex-col h-full',
-      image: 'h-64',
-      title: 'text-2xl font-bold line-clamp-3'
-    },
-    featured: {
-      container: 'flex flex-col h-full',
-      image: 'h-72 md:h-96',
-      title: 'text-2xl md:text-3xl font-bold line-clamp-3'
-    }
-  }
+ const cardSizes = {
+   sm: {
+     container: "flex flex-col h-full",
+     image: "h-40",
+     title: "text-base line-clamp-2",
+   },
+   md: {
+     container: "flex flex-col h-full",
+     image: "h-48",
+     title: "text-lg line-clamp-2",
+   },
+   lg: {
+     container: "flex flex-col h-full",
+     image: "h-64",
+     title: "text-xl line-clamp-3",
+   },
+   featured: {
+     container: "flex flex-col h-full",
+     image: "h-72 md:h-96",
+     title: "text-xl md:text-2xl line-clamp-2", // Aumentamos el tamaño aquí
+   },
+ };
+
   
   const currentSize = featured ? 'featured' : size
   const sizeClass = cardSizes[currentSize]
