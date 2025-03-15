@@ -1,10 +1,13 @@
-import React from 'react';
-import { Outlet, Link } from 'react-router-dom';
-import CategoryNav from '../components/ui/CategoryNav';
-import SearchBar from '../components/ui/SearchBar';
-import { useAuth } from '../contexts/AuthContext';
-import logo from '../assets/logo.png';
-import SocialLinks from '../components/ui/SocialLinks';
+
+// PENDIENTE POR COMPONETIZAR
+
+import React from "react";
+import { Outlet, Link } from "react-router-dom";
+import CategoryNav from "../components/ui/CategoryNav";
+import SearchBar from "../components/ui/SearchBar";
+import { useAuth } from "../contexts/AuthContext";
+import logo from "../assets/logo.png";
+import SocialLinks from "../components/ui/SocialLinks";
 import { MdAdminPanelSettings } from "react-icons/md";
 
 const MainLayout = () => {
@@ -16,23 +19,21 @@ const MainLayout = () => {
       <header className="bg-gray-800 shadow-md">
         <div className="container-custom py-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            {/* Logo */}
-            <div className="flex">
-              <img
-                className="flex items-center w-[60px]"
-                src={logo}
-                alt="logo"
-              />
+            {/* Logo y Título */}
+            <div className="flex items-center w-full md:w-auto justify-start">
+              <img className="w-[60px]" src={logo} alt="logo" />
               <Link
                 to="/"
-                className="flex items-center pt-2 text-2xl font-custom  text-white"
+                className="flex items-center pt-2 text-2xl font-custom text-white"
               >
                 Los Angeles{" "}
-                <span className="px-2 ml-2 text-white bg-red-600 font-bold">NEWS</span>
+                <span className="px-2 ml-2 text-white bg-red-700 font-bold">
+                  NEWS
+                </span>
               </Link>
             </div>
 
-            {/* Search and Admin */}
+            {/* Search y Admin */}
             <div className="flex items-center gap-4 w-full md:w-auto">
               <SearchBar className="flex-grow md:w-64" />
 
