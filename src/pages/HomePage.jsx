@@ -15,12 +15,12 @@ const HomePage = () => {
         />
       </Helmet>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[75%_25%]">
+      <div className="grid grid-cols-1 lg:gap-6 lg:grid-cols-[75%_25%]">
         <div>
           <FeaturedArticles />
           <LatestArticles />
         </div>
-        <div className="mt-14">
+        <div className="lg:mt-14">
           <TwitterFeed
             accounts={[
               "@UEFA",
