@@ -124,7 +124,7 @@ const ArticlePage = () => {
 
           {/* Article Header */}
           <header className="mb-8">
-            <h1 className="text-4xl font-bold mb-4">{title}</h1>
+            <h1 className="text-2xl font-bold mb-4">{title}</h1>
 
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-6">
               <time dateTime={createdAt?.toDate?.().toISOString()}>
@@ -179,8 +179,8 @@ const ArticlePage = () => {
 
         {/* Related Articles */}
         <div className="mt-12 pt-8 border-t border-gray-200">
-          <h2 className="text-2xl font-bold mb-6">Más Noticias</h2>
-          <LatestArticles limit={3} excludeIds={[id]} />
+          {/* <h2 className="text-2xl font-bold mb-6">Más Noticias</h2> */}
+          <LatestArticles limit={4} excludeIds={[id]} />
         </div>
       </article>
     </>

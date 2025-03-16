@@ -49,7 +49,7 @@ const LatestArticles = ({ limit = 9, excludeIds = [] }) => {
 
   return (
     <section className="mb-12">
-      <h2 className="text-2xl font-bold mb-6">Últimas Noticias</h2>
+      <h2 className="text-2xl font-bold mb-6">Más Noticias</h2>
       <ArticleGrid articles={articles} columns={2} />
     </section>
   );

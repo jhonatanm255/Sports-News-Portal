@@ -39,8 +39,11 @@ const MainLayout = () => {
 
               {/* Enlace al Panel de Administración o Iniciar Sesión */}
               {currentUser ? (
-                <Link to="/admin" className="btn btn-primary whitespace-nowrap">
-                  Panel Admin
+                <Link
+                  to="/admin"
+                  className="text-primary-500 text-3xl border border-primary-500 p-1 rounded-lg hover:text-primary-600 hover:border-primary-600"
+                >
+                  <MdAdminPanelSettings />
                 </Link>
               ) : (
                 <Link
