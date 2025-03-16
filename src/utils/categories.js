@@ -32,28 +32,28 @@ const categories = [
       { id: 'moda', name: 'Moda' }
     ]
   },
-  {
-    id: 'tendencias',
-    name: 'Tendencias',
-    subcategories: [
-      { id: 'viral', name: 'Viral' },
-      { id: 'redes-sociales', name: 'Redes Sociales' },
-      { id: 'internet', name: 'Internet' },
-      { id: 'apps', name: 'Apps' },
-      { id: 'gaming', name: 'Gaming' }
-    ]
-  },
-  {
-    id: 'otros',
-    name: 'Otros',
-    subcategories: [
-      { id: 'salud', name: 'Salud' },
-      { id: 'educacion', name: 'Educación' },
-      { id: 'gastronomia', name: 'Gastronomía' },
-      { id: 'viajes', name: 'Viajes' },
-      { id: 'cultura', name: 'Cultura' }
-    ]
-  }
+  // {
+  //   id: 'tendencias',
+  //   name: 'Tendencias',
+  //   subcategories: [
+  //     { id: 'viral', name: 'Viral' },
+  //     { id: 'redes-sociales', name: 'Redes Sociales' },
+  //     { id: 'internet', name: 'Internet' },
+  //     { id: 'apps', name: 'Apps' },
+  //     { id: 'gaming', name: 'Gaming' }
+  //   ]
+  // },
+  // {
+  //   id: 'otros',
+  //   name: 'Otros',
+  //   subcategories: [
+  //     { id: 'salud', name: 'Salud' },
+  //     { id: 'educacion', name: 'Educación' },
+  //     { id: 'gastronomia', name: 'Gastronomía' },
+  //     { id: 'viajes', name: 'Viajes' },
+  //     { id: 'cultura', name: 'Cultura' }
+  //   ]
+  // }
 ]
 
 export default categories
