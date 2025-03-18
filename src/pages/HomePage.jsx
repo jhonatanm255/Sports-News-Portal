@@ -75,9 +75,7 @@ const HomePage = () => {
         {/* Sección lateral: TwitterFeed + Noticias adicionales */}
         <div className="lg:col-span-1 flex flex-col gap-6 mt-14">
           <div className="min-h-[500px]">
-            <TwitterFeed
-              accounts={["@realmadrid", "@FCBarcelona", "@InterMiamiCF"]}
-            />
+            <TwitterFeed accounts={["@realmadrid", "@LAFC", "@TheChampions"]} />
           </div>
           {/* Noticias adicionales llenando los espacios vacíos */}
           <div className="grid gap-6">

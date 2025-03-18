@@ -28,7 +28,7 @@ const MainLayout = () => {
                   className="flex items-center pt-2 text-2xl font-custom font-semibold text-white"
                 >
                   Los Angeles{" "}
-                  <span className="px-2 ml-2 text-white bg-red-700 font-bold">
+                  <span className="px-3 py-0.5 ml-2 text-white bg-red-700 font-bold rounded-tl-2xl rounded-br-2xl">
                     NEWS
                   </span>
                 </Link>

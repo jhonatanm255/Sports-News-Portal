@@ -121,7 +121,7 @@ const OtherArticles = ({ limit = 6, excludeIds = [] }) => {
 
   return (
     <section className="mb-12">
-      <h2 className="text-2xl font-bold mb-6">Otras Noticias</h2>
+      <h2 className="text-2xl font-bold mb-6">Tendencias del día</h2>
       <ArticleGrid articles={articles} columns={1} />
     </section>
   );
