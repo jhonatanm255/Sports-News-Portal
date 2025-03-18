@@ -81,7 +81,7 @@ const FeaturedArticles = () => {
     const fetchFeaturedArticles = async () => {
       try {
         setLoading(true);
-        const featuredArticles = await getFeaturedArticles(5); // Obtener 5 artículos destacados
+        const featuredArticles = await getFeaturedArticles(4); // Obtener 5 artículos destacados
         setArticles(featuredArticles);
       } catch (err) {
         console.error("Error fetching featured articles:", err);
@@ -112,27 +112,31 @@ const FeaturedArticles = () => {
   const secondaryArticles = articles.slice(2); // Resto de los artículos para la columna derecha
 
   return (
-    <section className="mb-12">
-      <h2 className="text-2xl font-bold mb-6">Destacados</h2>
+    <>
+      <section className="mb-8">
+        <h2 className="text-2xl font-bold mb-6">Destacados</h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Columna izquierda: Dos artículos en dos filas */}
-        <div className="lg:col-span-2 grid grid-rows-2 gap-6">
-          {mainArticles.map((article) => (
-            <ArticleCard key={article.id} article={article} size="featured" />
-          ))}
-        </div>
-
-        {/* Columna derecha: Dos artículos pequeños */}
-        <div className="lg:col-span-1">
-          <div className="grid grid-cols-1 gap-6">
-            {secondaryArticles.slice(0, 2).map((article) => (
-              <ArticleCard key={article.id} article={article} size="sm" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Columna izquierda: Dos artículos en dos filas */}
+          <div className="lg:col-span-2 grid grid-rows-2 gap-6">
+            {mainArticles.map((article) => (
+              <ArticleCard key={article.id} article={article} size="featured" />
             ))}
           </div>
+
+          {/* Columna derecha: Dos artículos pequeños */}
+          <div className="lg:col-span-1">
+            <div className="grid grid-cols-1 gap-6">
+              {secondaryArticles.slice(0, 2).map((article) => (
+                <ArticleCard key={article.id} article={article} size="sm" />
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+        <hr className="mt-8 text-gray-900"/>
+      </section>
+      
+    </>
   );
 };
 

@@ -6,7 +6,7 @@ import { Outlet, Link } from "react-router-dom";
 import CategoryNav from "../components/ui/CategoryNav";
 import SearchBar from "../components/ui/SearchBar";
 import { useAuth } from "../contexts/AuthContext";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo2.png";
 import SocialLinks from "../components/ui/SocialLinks";
 import { MdAdminPanelSettings } from "react-icons/md";
 
@@ -18,19 +18,24 @@ const MainLayout = () => {
       {/* Header */}
       <header className="bg-gray-800 shadow-md">
         <div className="container-custom py-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 ">
             {/* Logo y Título */}
             <div className="flex items-center w-full md:w-auto justify-start">
-              <img className="w-[60px]" src={logo} alt="logo" />
-              <Link
-                to="/"
-                className="flex items-center pt-2 text-2xl font-custom text-white"
-              >
-                Los Angeles{" "}
-                <span className="px-2 ml-2 text-white bg-red-700 font-bold">
-                  NEWS
-                </span>
-              </Link>
+              <img className="w-[55px] mr-2 mt-1" src={logo} alt="logo" />
+              <span>
+                <Link
+                  to="/"
+                  className="flex items-center pt-2 text-2xl font-custom font-semibold text-white"
+                >
+                  Los Angeles{" "}
+                  <span className="px-2 ml-2 text-white bg-red-700 font-bold">
+                    NEWS
+                  </span>
+                </Link>
+                <p className="mt-1 text-sm text-gray-400">
+                  Deportes, Espectáculos y Noticias
+                </p>
+              </span>
             </div>
 
             {/* Search y Admin */}
@@ -41,14 +46,14 @@ const MainLayout = () => {
               {currentUser ? (
                 <Link
                   to="/admin"
-                  className="text-primary-500 text-3xl border border-primary-500 p-1 rounded-lg hover:text-primary-600 hover:border-primary-600"
+                  className="text-primary-500 text-3xl border border-primary-500 p-1 rounded-lg hover:text-primary-400 hover:border-primary-400"
                 >
                   <MdAdminPanelSettings />
                 </Link>
               ) : (
                 <Link
                   to="/login"
-                  className="text-gray-600 text-3xl hover:text-primary-500"
+                  className="text-gray-600 text-3xl border border-gray-600 p-1 rounded-lg hover:text-primary-500 hover:border-primary-500"
                 >
                   <MdAdminPanelSettings />
                 </Link>
@@ -136,16 +141,6 @@ const MainLayout = () => {
                     Búsqueda
                   </Link>
                 </li>
-                {currentUser && (
-                  <li>
-                    <Link
-                      to="/admin"
-                      className="text-gray-300 hover:text-white"
-                    >
-                      Administración
-                    </Link>
-                  </li>
-                )}
               </ul>
             </div>
 

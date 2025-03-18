@@ -24,7 +24,7 @@ const TwitterWidget = ({ account, height = 300, tweetLimit = 5 }) => {
   }, [account, tweetLimit]); // Recargar el widget si la cuenta o el límite cambian
 
   return (
-    <div className="twitter-widget mb-6">
+    <div className="twitter-widget h-auto mb-6">
       <a
         className="twitter-timeline"
         data-height={height}
@@ -38,3 +38,4 @@ const TwitterWidget = ({ account, height = 300, tweetLimit = 5 }) => {
 };
 
 export default React.memo(TwitterWidget); // Evita re-renderizados innecesarios
+

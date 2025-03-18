@@ -20,7 +20,7 @@ const SearchBar = ({ className = '' }) => {
         placeholder="Buscar noticias..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full text-white pl-4 pr-10 py-2 bg-gray-700 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+        className="w-full text-white pl-4 pr-10 py-2 bg-gray-700 border border-gray-700 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500"
       />
       <button
         type="submit"
