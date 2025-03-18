@@ -65,7 +65,9 @@
 
 
 
-import React, { useState, useEffect } from "react";
+
+
+import React, { useState, useEffect, useRef } from "react";
 import { getLatestArticles } from "../../services/articleService";
 import ArticleGrid from "./ArticleGrid";
 import LoadingSpinner from "./LoadingSpinner";
@@ -74,23 +76,31 @@ const LatestArticles = ({ limit = 30, excludeIds = [] }) => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const prevExcludeIdsRef = useRef(excludeIds);
 
   useEffect(() => {
+    // Verificar si excludeIds ha cambiado
+    const excludeIdsChanged =
+      JSON.stringify(prevExcludeIdsRef.current) !== JSON.stringify(excludeIds);
+    prevExcludeIdsRef.current = excludeIds;
+
     const fetchLatestArticles = async () => {
       try {
         setLoading(true);
+        setError(null);
+
+        // Obtener los últimos artículos
         const latestArticles = await getLatestArticles(
           limit + excludeIds.length
         );
+        console.log("Latest Articles (raw):", latestArticles); // Depuración
 
-        console.log("Artículos obtenidos:", latestArticles); // Verifica la estructura de los datos en consola
-
-        // Filtrar noticias destacadas (asegúrate de que la propiedad 'featured' es la correcta)
+        // Filtrar artículos excluidos
         const filteredArticles = latestArticles
-          .filter((article) => !article.featured) // Cambia esto si la propiedad es diferente
           .filter((article) => !excludeIds.includes(article.id))
           .slice(0, limit);
 
+        console.log("Filtered Articles:", filteredArticles); // Depuración
         setArticles(filteredArticles);
       } catch (err) {
         console.error("Error fetching latest articles:", err);
@@ -100,14 +110,16 @@ const LatestArticles = ({ limit = 30, excludeIds = [] }) => {
       }
     };
 
-    fetchLatestArticles();
-  }, [limit]); // No incluir excludeIds para evitar recargas constantes
+    // Solo ejecutar si excludeIds ha cambiado o es la primera carga
+    if (excludeIdsChanged || articles.length === 0) {
+      fetchLatestArticles();
+    }
+  }, [limit, articles.length]);
 
   if (loading) return <LoadingSpinner />;
 
-  if (error) {
+  if (error)
     return <div className="text-red-500 text-center py-4">{error}</div>;
-  }
 
   if (articles.length === 0) {
     return (
@@ -125,4 +137,4 @@ const LatestArticles = ({ limit = 30, excludeIds = [] }) => {
   );
 };
 
-export default LatestArticles;
+export default React.memo(LatestArticles);

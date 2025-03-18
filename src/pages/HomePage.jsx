@@ -65,10 +65,10 @@ const HomePage = () => {
         />
       </Helmet>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Sección principal: Ocupa 2 columnas en pantallas grandes */}
         <div className="lg:col-span-2">
-          <FeaturedArticles/>
+          <FeaturedArticles />
           <LatestArticles />
         </div>
 
@@ -76,7 +76,7 @@ const HomePage = () => {
         <div className="lg:col-span-1 flex flex-col gap-6 mt-14">
           <div className="min-h-[500px]">
             <TwitterFeed
-              accounts={["@realmadrid", "@LAFC_FANS", "@americademexico"]}
+              accounts={["@realmadrid", "@FCBarcelona", "@InterMiamiCF"]}
             />
           </div>
           {/* Noticias adicionales llenando los espacios vacíos */}

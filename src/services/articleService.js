@@ -1,137 +1,137 @@
-// import { 
-//   collection, 
-//   addDoc, 
-//   updateDoc, 
-//   deleteDoc, 
-//   doc, 
-//   getDoc, 
-//   getDocs, 
-//   query, 
-//   where, 
-//   orderBy, 
-//   limit, 
-//   startAfter, 
+// import {
+//   collection,
+//   addDoc,
+//   updateDoc,
+//   deleteDoc,
+//   doc,
+//   getDoc,
+//   getDocs,
+//   query,
+//   where,
+//   orderBy,
+//   limit,
+//   startAfter,
 //   serverTimestamp,
-//   Timestamp
-// } from 'firebase/firestore'
-// import { db } from '../firebase/config'
-// import supabase from '../supabase/config'
+//   Timestamp,
+// } from "firebase/firestore";
+// import { db } from "../firebase/config";
+// import supabase from "../supabase/config";
 
-// const COLLECTION_NAME = 'articles'
+// const COLLECTION_NAME = "articles";
 
 // // Upload image to Supabase Storage
 // export const uploadImage = async (file, fileName) => {
 //   try {
 //     const { data, error } = await supabase.storage
-//       .from('news-images')
+//       .from("news-images")
 //       .upload(`articles/${fileName}`, file, {
-//         cacheControl: '3600',
-//         upsert: false
-//       })
-    
-//     if (error) throw error
-    
+//         cacheControl: "3600",
+//         upsert: false,
+//       });
+
+//     if (error) throw error;
+
 //     // Get public URL
 //     const { data: urlData } = supabase.storage
-//       .from('news-images')
-//       .getPublicUrl(`articles/${fileName}`)
-    
-//     return urlData.publicUrl
+//       .from("news-images")
+//       .getPublicUrl(`articles/${fileName}`);
+
+//     return urlData.publicUrl;
 //   } catch (error) {
-//     console.error('Error uploading image:', error)
-//     throw error
+//     console.error("Error uploading image:", error);
+//     throw error;
 //   }
-// }
+// };
 
 // // Create a new article
 // export const createArticle = async (articleData) => {
 //   try {
 //     // Add auto-delete flag if enabled
-//     const autoDeleteData = articleData.autoDelete 
-//       ? { 
+//     const autoDeleteData = articleData.autoDelete
+//       ? {
 //           autoDelete: true,
 //           deleteAt: Timestamp.fromDate(
 //             new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
-//           )
-//         } 
-//       : { autoDelete: false }
-    
+//           ),
+//         }
+//       : { autoDelete: false };
+
 //     // Add server timestamp
 //     const article = {
 //       ...articleData,
 //       ...autoDeleteData,
 //       createdAt: serverTimestamp(),
-//       updatedAt: serverTimestamp()
-//     }
-    
-//     const docRef = await addDoc(collection(db, COLLECTION_NAME), article)
-//     return { id: docRef.id, ...article }
+//       updatedAt: serverTimestamp(),
+//     };
+
+//     const docRef = await addDoc(collection(db, COLLECTION_NAME), article);
+//     return { id: docRef.id, ...article };
 //   } catch (error) {
-//     console.error('Error creating article:', error)
-//     throw error
+//     console.error("Error creating article:", error);
+//     throw error;
 //   }
-// }
+// };
 
 // // Get article by ID
 // export const getArticleById = async (id) => {
 //   try {
-//     const docRef = doc(db, COLLECTION_NAME, id)
-//     const docSnap = await getDoc(docRef)
-    
+//     const docRef = doc(db, COLLECTION_NAME, id);
+//     const docSnap = await getDoc(docRef);
+
 //     if (docSnap.exists()) {
-//       return { id: docSnap.id, ...docSnap.data() }
+//       return { id: docSnap.id, ...docSnap.data() };
 //     } else {
-//       return null
+//       return null;
 //     }
 //   } catch (error) {
-//     console.error('Error getting article:', error)
-//     throw error
+//     console.error("Error getting article:", error);
+//     throw error;
 //   }
-// }
+// };
 
 // // Update article
 // export const updateArticle = async (id, articleData) => {
 //   try {
-//     const docRef = doc(db, COLLECTION_NAME, id)
-    
+//     const docRef = doc(db, COLLECTION_NAME, id);
+
 //     // Handle auto-delete flag changes
-//     let autoDeleteData = {}
+//     let autoDeleteData = {};
 //     if (articleData.autoDelete !== undefined) {
-//       autoDeleteData = articleData.autoDelete 
-//         ? { 
+//       autoDeleteData = articleData.autoDelete
+//         ? {
 //             autoDelete: true,
 //             deleteAt: Timestamp.fromDate(
 //               new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
-//             )
-//           } 
-//         : { autoDelete: false, deleteAt: null }
+//             ),
+//           }
+//         : { autoDelete: false, deleteAt: null };
 //     }
-    
+
 //     // Update the document
 //     await updateDoc(docRef, {
 //       ...articleData,
 //       ...autoDeleteData,
-//       updatedAt: serverTimestamp()
-//     })
-    
-//     return { id, ...articleData }
+//       updatedAt: serverTimestamp(),
+//     });
+
+//     return { id, ...articleData };
 //   } catch (error) {
-//     console.error('Error updating article:', error)
-//     throw error
+//     console.error("Error updating article:", error);
+//     throw error;
 //   }
-// }
+// };
 
 // // Delete article
 // export const deleteArticle = async (id) => {
 //   try {
-//     const docRef = doc(db, COLLECTION_NAME, id)
-//     await deleteDoc(docRef)
-//     return true
+//     const docRef = doc(db, COLLECTION_NAME, id);
+//     await deleteDoc(docRef);
+//     return true;
 //   } catch (error) {
-//     console.error('Error deleting article:', error)
-//     throw error
+//     console.error("Error deleting article:", error);
+//     throw error;
 //   }
-// }
+// };
 
 // // Get featured articles
 // export const getFeaturedArticles = async (limitCount = 5) => {
@@ -140,7 +140,7 @@
 //       collection(db, COLLECTION_NAME),
 //       where("featured", "==", true),
 //       orderBy("createdAt", "desc"),
-//       limit(limitCount) // Agregar paréntesis
+//       limit(limitCount)
 //     );
 
 //     const querySnapshot = await getDocs(q);
@@ -154,102 +154,110 @@
 //   }
 // };
 
-
 // // Get latest articles
 // export const getLatestArticles = async (limitCount = 10) => {
 //   try {
 //     const q = query(
 //       collection(db, COLLECTION_NAME),
-//       orderBy('createdAt', 'desc'),
-//       limit(limit)
-//     )
-    
-//     const querySnapshot = await getDocs(q)
-//     return querySnapshot.docs.map(doc => ({
+//       orderBy("createdAt", "desc"),
+//       limit(limitCount)
+//     );
+
+//     const querySnapshot = await getDocs(q);
+//     return querySnapshot.docs.map((doc) => ({
 //       id: doc.id,
-//       ...doc.data()
-//     }))
+//       ...doc.data(),
+//     }));
 //   } catch (error) {
-//     console.error('Error getting latest articles:', error)
-//     throw error
+//     console.error("Error getting latest articles:", error);
+//     throw error;
 //   }
-// }
+// };
 
 // // Get articles by category
-// export const getArticlesByCategory = async (category, limitCount = 10, lastDoc = null) => {
+// export const getArticlesByCategory = async (
+//   category,
+//   limitCount = 10,
+//   lastDoc = null
+// ) => {
 //   try {
-//     let q
-    
+//     let q;
+
 //     if (lastDoc) {
 //       q = query(
 //         collection(db, COLLECTION_NAME),
-//         where('category', '==', category),
-//         orderBy('createdAt', 'desc'),
+//         where("category", "==", category),
+//         orderBy("createdAt", "desc"),
 //         startAfter(lastDoc),
 //         limit(limitCount)
-//       )
+//       );
 //     } else {
 //       q = query(
 //         collection(db, COLLECTION_NAME),
-//         where('category', '==', category),
-//         orderBy('createdAt', 'desc'),
+//         where("category", "==", category),
+//         orderBy("createdAt", "desc"),
 //         limit(limitCount)
-//       )
+//       );
 //     }
-    
-//     const querySnapshot = await getDocs(q)
-//     const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1]
-    
-//     const articles = querySnapshot.docs.map(doc => ({
+
+//     const querySnapshot = await getDocs(q);
+//     const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+//     const articles = querySnapshot.docs.map((doc) => ({
 //       id: doc.id,
-//       ...doc.data()
-//     }))
-    
-//     return { articles, lastVisible }
+//       ...doc.data(),
+//     }));
+
+//     return { articles, lastVisible };
 //   } catch (error) {
-//     console.error('Error getting articles by category:', error)
-//     throw error
+//     console.error("Error getting articles by category:", error);
+//     throw error;
 //   }
-// }
+// };
 
 // // Get articles by subcategory
-// export const getArticlesBySubcategory = async (category, subcategory, limitCount = 10, lastDoc = null) => {
+// export const getArticlesBySubcategory = async (
+//   category,
+//   subcategory,
+//   limitCount = 10,
+//   lastDoc = null
+// ) => {
 //   try {
-//     let q
-    
+//     let q;
+
 //     if (lastDoc) {
 //       q = query(
 //         collection(db, COLLECTION_NAME),
-//         where('category', '==', category),
-//         where('subcategory', '==', subcategory),
-//         orderBy('createdAt', 'desc'),
+//         where("category", "==", category),
+//         where("subcategory", "==", subcategory),
+//         orderBy("createdAt", "desc"),
 //         startAfter(lastDoc),
 //         limit(limitCount)
-//       )
+//       );
 //     } else {
 //       q = query(
 //         collection(db, COLLECTION_NAME),
-//         where('category', '==', category),
-//         where('subcategory', '==', subcategory),
-//         orderBy('createdAt', 'desc'),
+//         where("category", "==", category),
+//         where("subcategory", "==", subcategory),
+//         orderBy("createdAt", "desc"),
 //         limit(limitCount)
-//       )
+//       );
 //     }
-    
-//     const querySnapshot = await getDocs(q)
-//     const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1]
-    
-//     const articles = querySnapshot.docs.map(doc => ({
+
+//     const querySnapshot = await getDocs(q);
+//     const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+//     const articles = querySnapshot.docs.map((doc) => ({
 //       id: doc.id,
-//       ...doc.data()
-//     }))
-    
-//     return { articles, lastVisible }
+//       ...doc.data(),
+//     }));
+
+//     return { articles, lastVisible };
 //   } catch (error) {
-//     console.error('Error getting articles by subcategory:', error)
-//     throw error
+//     console.error("Error getting articles by subcategory:", error);
+//     throw error;
 //   }
-// }
+// };
 
 // // Search articles
 // export const searchArticles = async (searchTerm, limitCount = 10) => {
@@ -257,97 +265,119 @@
 //     // Firestore doesn't support full-text search natively
 //     // This is a simple implementation that searches in title only
 //     // For a production app, consider using Algolia or a similar service
-    
+
 //     const q = query(
 //       collection(db, COLLECTION_NAME),
-//       orderBy('title'),
-//       // where('title', '>=', searchTerm),
-//       // where('title', '<=', searchTerm + '\uf8ff'),
+//       orderBy("title"),
 //       limit(limitCount)
-//     )
-    
-//     const querySnapshot = await getDocs(q)
-    
+//     );
+
+//     const querySnapshot = await getDocs(q);
+
 //     // Client-side filtering (not ideal for large datasets)
 //     const articles = querySnapshot.docs
-//       .map(doc => ({
+//       .map((doc) => ({
 //         id: doc.id,
-//         ...doc.data()
+//         ...doc.data(),
 //       }))
-//       .filter(article => 
-//         article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-//         article.content.toLowerCase().includes(searchTerm.toLowerCase())
-//       )
-    
-//     return articles
-//   } catch (error) {
-//     console.error('Error searching articles:', error)
-//     throw error
-//   }
-// }
+//       .filter(
+//         (article) =>
+//           article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//           article.content.toLowerCase().includes(searchTerm.toLowerCase())
+//       );
 
-// // Get all articles (admin)
+//     return articles;
+//   } catch (error) {
+//     console.error("Error searching articles:", error);
+//     throw error;
+//   }
+// };
+
+// // Get all articles (admin, con paginación)
 // export const getAllArticles = async (limitCount = 20, lastDoc = null) => {
 //   try {
-//     let q
-    
+//     let q;
+
 //     if (lastDoc) {
 //       q = query(
 //         collection(db, COLLECTION_NAME),
-//         orderBy('createdAt', 'desc'),
+//         orderBy("createdAt", "desc"),
 //         startAfter(lastDoc),
 //         limit(limitCount)
-//       )
+//       );
 //     } else {
 //       q = query(
 //         collection(db, COLLECTION_NAME),
-//         orderBy('createdAt', 'desc'),
+//         orderBy("createdAt", "desc"),
 //         limit(limitCount)
-//       )
+//       );
 //     }
-    
-//     const querySnapshot = await getDocs(q)
-//     const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1]
-    
-//     const articles = querySnapshot.docs.map(doc => ({
+
+//     const querySnapshot = await getDocs(q);
+//     const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+//     const articles = querySnapshot.docs.map((doc) => ({
 //       id: doc.id,
-//       ...doc.data()
-//     }))
-    
-//     return { articles, lastVisible }
+//       ...doc.data(),
+//     }));
+
+//     return { articles, lastVisible };
 //   } catch (error) {
-//     console.error('Error getting all articles:', error)
-//     throw error
+//     console.error("Error getting all articles:", error);
+//     throw error;
 //   }
-// }
+// };
+
+// // Get all articles for search (sin paginación)
+// export const getAllArticlesForSearch = async () => {
+//   try {
+//     const q = query(
+//       collection(db, COLLECTION_NAME),
+//       orderBy("createdAt", "desc")
+//     );
+
+//     const querySnapshot = await getDocs(q);
+
+//     const articles = querySnapshot.docs.map((doc) => ({
+//       id: doc.id,
+//       ...doc.data(),
+//     }));
+
+//     return articles; // Devuelve solo el array de artículos
+//   } catch (error) {
+//     console.error("Error getting all articles for search:", error);
+//     throw error;
+//   }
+// };
 
 // // Setup auto-delete function
 // // This would typically be implemented as a Cloud Function in Firebase
 // // For this example, we'll create a function that could be called by a scheduled task
 // export const checkAndDeleteExpiredArticles = async () => {
 //   try {
-//     const now = Timestamp.now()
-    
+//     const now = Timestamp.now();
+
 //     const q = query(
 //       collection(db, COLLECTION_NAME),
-//       where('autoDelete', '==', true),
-//       where('deleteAt', '<=', now)
-//     )
-    
-//     const querySnapshot = await getDocs(q)
-    
-//     const deletePromises = querySnapshot.docs.map(doc => 
-//       deleteDoc(doc.ref)
-//     )
-    
-//     await Promise.all(deletePromises)
-    
-//     return querySnapshot.docs.length
+//       where("autoDelete", "==", true),
+//       where("deleteAt", "<=", now)
+//     );
+
+//     const querySnapshot = await getDocs(q);
+
+//     const deletePromises = querySnapshot.docs.map((doc) => deleteDoc(doc.ref));
+
+//     await Promise.all(deletePromises);
+
+//     return querySnapshot.docs.length;
 //   } catch (error) {
-//     console.error('Error deleting expired articles:', error)
-//     throw error
+//     console.error("Error deleting expired articles:", error);
+//     throw error;
 //   }
-// }
+// };
+
+
+
 
 
 
@@ -388,7 +418,7 @@ import supabase from "../supabase/config";
 
 const COLLECTION_NAME = "articles";
 
-// Upload image to Supabase Storage
+// Subir imagen a Supabase Storage
 export const uploadImage = async (file, fileName) => {
   try {
     const { data, error } = await supabase.storage
@@ -400,32 +430,32 @@ export const uploadImage = async (file, fileName) => {
 
     if (error) throw error;
 
-    // Get public URL
+    // Obtener URL pública
     const { data: urlData } = supabase.storage
       .from("news-images")
       .getPublicUrl(`articles/${fileName}`);
 
     return urlData.publicUrl;
   } catch (error) {
-    console.error("Error uploading image:", error);
+    console.error("Error subiendo imagen:", error);
     throw error;
   }
 };
 
-// Create a new article
+// Crear un nuevo artículo
 export const createArticle = async (articleData) => {
   try {
-    // Add auto-delete flag if enabled
+    // Agregar flag de auto-eliminación si está habilitado
     const autoDeleteData = articleData.autoDelete
       ? {
           autoDelete: true,
           deleteAt: Timestamp.fromDate(
-            new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
+            new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 días desde ahora
           ),
         }
       : { autoDelete: false };
 
-    // Add server timestamp
+    // Agregar timestamp del servidor
     const article = {
       ...articleData,
       ...autoDeleteData,
@@ -436,12 +466,12 @@ export const createArticle = async (articleData) => {
     const docRef = await addDoc(collection(db, COLLECTION_NAME), article);
     return { id: docRef.id, ...article };
   } catch (error) {
-    console.error("Error creating article:", error);
+    console.error("Error creando artículo:", error);
     throw error;
   }
 };
 
-// Get article by ID
+// Obtener artículo por ID
 export const getArticleById = async (id) => {
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
@@ -453,30 +483,30 @@ export const getArticleById = async (id) => {
       return null;
     }
   } catch (error) {
-    console.error("Error getting article:", error);
+    console.error("Error obteniendo artículo:", error);
     throw error;
   }
 };
 
-// Update article
+// Actualizar artículo
 export const updateArticle = async (id, articleData) => {
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
 
-    // Handle auto-delete flag changes
+    // Manejar cambios en el flag de auto-eliminación
     let autoDeleteData = {};
     if (articleData.autoDelete !== undefined) {
       autoDeleteData = articleData.autoDelete
         ? {
             autoDelete: true,
             deleteAt: Timestamp.fromDate(
-              new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
+              new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 días desde ahora
             ),
           }
         : { autoDelete: false, deleteAt: null };
     }
 
-    // Update the document
+    // Actualizar el documento
     await updateDoc(docRef, {
       ...articleData,
       ...autoDeleteData,
@@ -485,29 +515,29 @@ export const updateArticle = async (id, articleData) => {
 
     return { id, ...articleData };
   } catch (error) {
-    console.error("Error updating article:", error);
+    console.error("Error actualizando artículo:", error);
     throw error;
   }
 };
 
-// Delete article
+// Eliminar artículo
 export const deleteArticle = async (id) => {
   try {
     const docRef = doc(db, COLLECTION_NAME, id);
     await deleteDoc(docRef);
     return true;
   } catch (error) {
-    console.error("Error deleting article:", error);
+    console.error("Error eliminando artículo:", error);
     throw error;
   }
 };
 
-// Get featured articles
+// Obtener artículos destacados
 export const getFeaturedArticles = async (limitCount = 5) => {
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
-      where("featured", "==", true),
+      where("featured", "==", true), // Solo artículos destacados
       orderBy("createdAt", "desc"),
       limit(limitCount)
     );
@@ -518,16 +548,40 @@ export const getFeaturedArticles = async (limitCount = 5) => {
       ...doc.data(),
     }));
   } catch (error) {
-    console.error("Error getting featured articles:", error);
+    console.error("Error obteniendo artículos destacados:", error);
     throw error;
   }
 };
 
-// Get latest articles
+// Obtener artículos normales (no destacados y no complementarios)
+// Obtener artículos normales (no destacados y no complementarios)
 export const getLatestArticles = async (limitCount = 10) => {
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
+      where("featured", "==", false), // Excluye artículos destacados
+      where("is_complementary", "==", false), // Excluye artículos complementarios
+      orderBy("createdAt", "desc"), // Ordena por fecha de creación
+      limit(limitCount) // Limita el número de resultados
+    );
+
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    console.error("Error obteniendo últimas noticias:", error);
+    throw error;
+  }
+};
+
+// Obtener artículos complementarios
+export const getComplementaryArticles = async (limitCount = 6) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("is_complementary", "==", true), // Solo artículos complementarios
       orderBy("createdAt", "desc"),
       limit(limitCount)
     );
@@ -538,12 +592,12 @@ export const getLatestArticles = async (limitCount = 10) => {
       ...doc.data(),
     }));
   } catch (error) {
-    console.error("Error getting latest articles:", error);
+    console.error("Error obteniendo artículos complementarios:", error);
     throw error;
   }
 };
 
-// Get articles by category
+// Obtener artículos por categoría
 export const getArticlesByCategory = async (
   category,
   limitCount = 10,
@@ -579,12 +633,12 @@ export const getArticlesByCategory = async (
 
     return { articles, lastVisible };
   } catch (error) {
-    console.error("Error getting articles by category:", error);
+    console.error("Error obteniendo artículos por categoría:", error);
     throw error;
   }
 };
 
-// Get articles by subcategory
+// Obtener artículos por subcategoría
 export const getArticlesBySubcategory = async (
   category,
   subcategory,
@@ -623,17 +677,17 @@ export const getArticlesBySubcategory = async (
 
     return { articles, lastVisible };
   } catch (error) {
-    console.error("Error getting articles by subcategory:", error);
+    console.error("Error obteniendo artículos por subcategoría:", error);
     throw error;
   }
 };
 
-// Search articles
+// Buscar artículos
 export const searchArticles = async (searchTerm, limitCount = 10) => {
   try {
-    // Firestore doesn't support full-text search natively
-    // This is a simple implementation that searches in title only
-    // For a production app, consider using Algolia or a similar service
+    // Firestore no admite búsqueda de texto completo de forma nativa
+    // Esta es una implementación simple que busca solo en el título
+    // Para una aplicación en producción, considera usar Algolia o un servicio similar
 
     const q = query(
       collection(db, COLLECTION_NAME),
@@ -643,7 +697,7 @@ export const searchArticles = async (searchTerm, limitCount = 10) => {
 
     const querySnapshot = await getDocs(q);
 
-    // Client-side filtering (not ideal for large datasets)
+    // Filtrado en el cliente (no ideal para grandes conjuntos de datos)
     const articles = querySnapshot.docs
       .map((doc) => ({
         id: doc.id,
@@ -657,12 +711,12 @@ export const searchArticles = async (searchTerm, limitCount = 10) => {
 
     return articles;
   } catch (error) {
-    console.error("Error searching articles:", error);
+    console.error("Error buscando artículos:", error);
     throw error;
   }
 };
 
-// Get all articles (admin, con paginación)
+// Obtener todos los artículos (admin, con paginación)
 export const getAllArticles = async (limitCount = 20, lastDoc = null) => {
   try {
     let q;
@@ -692,12 +746,12 @@ export const getAllArticles = async (limitCount = 20, lastDoc = null) => {
 
     return { articles, lastVisible };
   } catch (error) {
-    console.error("Error getting all articles:", error);
+    console.error("Error obteniendo todos los artículos:", error);
     throw error;
   }
 };
 
-// Get all articles for search (sin paginación)
+// Obtener todos los artículos para búsqueda (sin paginación)
 export const getAllArticlesForSearch = async () => {
   try {
     const q = query(
@@ -714,14 +768,14 @@ export const getAllArticlesForSearch = async () => {
 
     return articles; // Devuelve solo el array de artículos
   } catch (error) {
-    console.error("Error getting all articles for search:", error);
+    console.error("Error obteniendo todos los artículos para búsqueda:", error);
     throw error;
   }
 };
 
-// Setup auto-delete function
-// This would typically be implemented as a Cloud Function in Firebase
-// For this example, we'll create a function that could be called by a scheduled task
+// Configurar función de auto-eliminación
+// Esto normalmente se implementaría como una Cloud Function en Firebase
+// Para este ejemplo, creamos una función que podría ser llamada por una tarea programada
 export const checkAndDeleteExpiredArticles = async () => {
   try {
     const now = Timestamp.now();
@@ -740,7 +794,7 @@ export const checkAndDeleteExpiredArticles = async () => {
 
     return querySnapshot.docs.length;
   } catch (error) {
-    console.error("Error deleting expired articles:", error);
+    console.error("Error eliminando artículos expirados:", error);
     throw error;
   }
 };
