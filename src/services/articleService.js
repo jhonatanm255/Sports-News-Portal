@@ -352,6 +352,28 @@ export const getAllArticles = async (limitCount = 20, lastDoc = null) => {
   }
 };
 
+// Obtener artículos destacados por categoría
+export const getFeaturedArticlesByCategory = async (category, limitCount = 3) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("category", "==", category), // Filtra por categoría
+      where("featured", "==", true), // Solo artículos destacados
+      orderBy("createdAt", "desc"), // Ordena por fecha de creación
+      limit(limitCount) // Limita el número de resultados
+    );
+
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    console.error("Error obteniendo artículos destacados por categoría:", error);
+    throw error;
+  }
+};
+
 // Obtener todos los artículos para búsqueda (sin paginación)
 export const getAllArticlesForSearch = async () => {
   try {

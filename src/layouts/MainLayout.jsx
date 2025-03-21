@@ -147,9 +147,9 @@ const MainLayout = () => {
             <div>
               <h4 className="text-lg font-bold mb-4">Contacto</h4>
               <p className="text-gray-300 mb-4">
-                Email: info@portaldenoticias.com
+                Email: info@lanewssports.com
                 <br />
-                Teléfono: +1 234 567 890
+                Teléfono: +1 323 590 6087
               </p>
               <SocialLinks />
             </div>
