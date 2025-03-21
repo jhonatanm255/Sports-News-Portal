@@ -35,12 +35,12 @@ const TwitterFeed = ({ accounts = [] }) => {
 
   return (
     <>
-      <div className="twitter-feed bg-white p-4 rounded-lg shadow-md">
+      <div className="twitter-feed mb-6 p-4 bg-white shadow-lg rounded-lg">
         <h3 className="font-custom text-lg font-semibold mb-4">
           <FontAwesomeIcon icon={faXTwitter} className="text-2xl mr-4" />
           Top News Sports
         </h3>
-        <div className="space-y-6">
+        <div className="space-y-9">
           {visibleAccounts.map((account, index) => (
             <TwitterWidget key={index} account={account} height={500} />
           ))}
@@ -52,3 +52,16 @@ const TwitterFeed = ({ accounts = [] }) => {
 };
 
 export default TwitterFeed;
+
+
+
+
+
+
+
+
+
+
+
+
+
