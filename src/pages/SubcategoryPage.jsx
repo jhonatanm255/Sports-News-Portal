@@ -1,146 +1,258 @@
-import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
-import { getArticlesBySubcategory } from '../services/articleService'
-import { getCategoryById, getSubcategoryById } from '../utils/categories'
-import ArticleGrid from '../components/ui/ArticleGrid'
-import LoadingSpinner from '../components/ui/LoadingSpinner'
-import Pagination from '../components/ui/Pagination'
-import TwitterFeed from '../components/ui/TwitterFeed'
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { getArticlesBySubcategory } from "../services/articleService";
+import { getCategoryById, getSubcategoryById } from "../utils/categories";
+import ArticleGrid from "../components/ui/ArticleGrid";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
+import TwitterFeed from "../components/ui/TwitterFeed";
+import Pagination from "../components/ui/Pagination";
+import useMediaQuery from "../hooks/useMediaQuery";
 
-const ARTICLES_PER_PAGE = 9
+const ARTICLES_PER_PAGE = 9;
 
 const SubcategoryPage = () => {
-  const { category, subcategory } = useParams()
-  const [articles, setArticles] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-  const [lastDoc, setLastDoc] = useState(null)
-  const [pageCache, setPageCache] = useState({})
-  
-  const categoryInfo = getCategoryById(category)
-  const subcategoryInfo = getSubcategoryById(category, subcategory)
-  
+  const { category, subcategory } = useParams();
+  const [articles, setArticles] = useState({
+    featured: [],
+    normal: [],
+    complementary: [],
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [lastDoc, setLastDoc] = useState(null);
+  const [pageCache, setPageCache] = useState({});
+
+  const isMobile = useMediaQuery("(max-width: 1023px)");
+  const categoryInfo = getCategoryById(category);
+  const subcategoryInfo = getSubcategoryById(category, subcategory);
+
+  // Twitter accounts only for sports subcategories
+  const twitterAccounts =
+    category === "deportes" && subcategoryInfo?.twitterAccounts
+      ? subcategoryInfo.twitterAccounts
+      : [];
+
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        setLoading(true)
-        
-        // Check if we have cached data for this page
+        setLoading(true);
+
         if (pageCache[currentPage]) {
-          setArticles(pageCache[currentPage].articles)
-          setLastDoc(pageCache[currentPage].lastDoc)
-          setLoading(false)
-          return
+          setArticles(pageCache[currentPage].articles);
+          setLastDoc(pageCache[currentPage].lastDoc);
+          setLoading(false);
+          return;
         }
-        
-        // If going to page 1, reset lastDoc
-        let lastDocToUse = currentPage === 1 ? null : lastDoc
-        
-        const { articles: fetchedArticles, lastVisible } = await getArticlesBySubcategory(
-          category,
-          subcategory,
-          ARTICLES_PER_PAGE,
-          lastDocToUse
-        )
-        
-        // Update articles and lastDoc
-        setArticles(fetchedArticles)
-        setLastDoc(lastVisible)
-        
-        // Cache the results
-        setPageCache(prev => ({
+
+        let lastDocToUse = currentPage === 1 ? null : lastDoc;
+        const { articles: fetchedArticles, lastVisible } =
+          await getArticlesBySubcategory(
+            category,
+            subcategory,
+            ARTICLES_PER_PAGE,
+            lastDocToUse
+          );
+
+        const featured = fetchedArticles.filter(
+          (article) => article.is_featured
+        );
+        const normal = fetchedArticles.filter(
+          (article) => !article.is_featured && !article.is_complementary
+        );
+        const complementary = fetchedArticles.filter(
+          (article) => article.is_complementary
+        );
+
+        setArticles({ featured, normal, complementary });
+        setLastDoc(lastVisible);
+
+        setPageCache((prev) => ({
           ...prev,
           [currentPage]: {
-            articles: fetchedArticles,
-            lastDoc: lastVisible
-          }
-        }))
-        
-        // Estimate total pages (this is an approximation since Firestore doesn't provide count)
-        setTotalPages(Math.max(currentPage, totalPages))
-        
+            articles: { featured, normal, complementary },
+            lastDoc: lastVisible,
+          },
+        }));
+
+        setTotalPages(Math.max(currentPage, totalPages));
       } catch (err) {
-        console.error('Error fetching subcategory articles:', err)
-        setError('No se pudieron cargar los artículos de esta subcategoría')
+        console.error("Error fetching subcategory articles:", err);
+        setError("No se pudieron cargar los artículos de esta subcategoría");
       } finally {
-        setLoading(false)
+        setLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, [category, subcategory, currentPage]);
+
+  const renderMobileArticlesWithTwitter = () => {
+    if (!isMobile || category !== "deportes" || twitterAccounts.length === 0) {
+      return <ArticleGrid articles={articles.normal} columns={2} />;
+    }
+
+    const groupedArticles = [];
+    const articlesCopy = [...articles.normal];
+
+    while (articlesCopy.length > 0) {
+      const articleGroup = articlesCopy.splice(0, 3);
+      groupedArticles.push(articleGroup);
+
+      if (twitterAccounts.length > 0 && articlesCopy.length > 0) {
+        const account =
+          twitterAccounts[groupedArticles.length % twitterAccounts.length];
+        groupedArticles.push([{ isTwitterFeed: true, account }]);
       }
     }
-    
-    fetchArticles()
-  }, [category, subcategory, currentPage])
-  
+
+    return (
+      <div className="space-y-6">
+        {groupedArticles.map((group, index) => {
+          if (group[0]?.isTwitterFeed) {
+            return (
+              <div key={`twitter-${index}`} className="my-4">
+                <TwitterFeed
+                  accounts={[group[0].account]}
+                  mobileHeight="300px"
+                  singleAccountMode
+                />
+              </div>
+            );
+          }
+          return (
+            <ArticleGrid
+              key={`articles-${index}`}
+              articles={group}
+              columns={1}
+            />
+          );
+        })}
+      </div>
+    );
+  };
+
   const handlePageChange = (page) => {
-    setCurrentPage(page)
-    window.scrollTo(0, 0)
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
+
+  if (loading && currentPage === 1) return <LoadingSpinner />;
+  if (error)
+    return <div className="text-red-500 text-center py-4">{error}</div>;
+  if (articles.normal.length === 0 && !loading) {
+    return (
+      <div className="text-gray-500 text-center py-4 min-h-screen">
+        No hay artículos en esta subcategoría
+      </div>
+    );
   }
-  
-  if (loading && currentPage === 1) return <LoadingSpinner />
-  
-  if (error) return <div className="text-red-500 text-center py-4">{error}</div>
-  
-  // Check if this subcategory has Twitter accounts
-  const hasTwitterAccounts = subcategoryInfo?.twitterAccounts && subcategoryInfo.twitterAccounts.length > 0
-  
+
   return (
     <>
       <Helmet>
         <title>
-          {subcategoryInfo 
-            ? `${subcategoryInfo.name} - ${categoryInfo?.name || 'Categoría'} - Portal de Noticias` 
-            : 'Subcategoría - Portal de Noticias'}
+          {subcategoryInfo
+            ? `${subcategoryInfo.name} - ${
+                categoryInfo?.name || "Categoría"
+              } - Portal de Noticias`
+            : "Subcategoría - Portal de Noticias"}
         </title>
-        <meta 
-          name="description" 
-          content={`Noticias de ${subcategoryInfo ? subcategoryInfo.name : 'esta subcategoría'}. Las últimas actualizaciones y artículos.`} 
+        <meta
+          name="description"
+          content={`Noticias de ${
+            subcategoryInfo ? subcategoryInfo.name : "esta subcategoría"
+          }. Las últimas actualizaciones y artículos.`}
         />
       </Helmet>
-      
-      <div>
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold">{subcategoryInfo ? subcategoryInfo.name : 'Subcategoría'}</h1>
-          <p className="text-gray-600">
-            {categoryInfo ? categoryInfo.name : 'Categoría'}
-          </p>
-        </div>
-        
-        {loading && currentPage > 1 ? (
-          <LoadingSpinner />
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Articles section */}
-            <div className={`${hasTwitterAccounts ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
-              {articles.length === 0 && !loading ? (
-                <div className="text-gray-500 text-center py-4">No hay artículos en esta subcategoría</div>
-              ) : (
-                <>
-                  <ArticleGrid articles={articles} columns={hasTwitterAccounts ? 2 : 3} />
-                  
-                  {articles.length > 0 && (
-                    <Pagination 
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      onPageChange={handlePageChange}
-                    />
-                  )}
-                </>
-              )}
-            </div>
-            
-            {/* Twitter feed for sports categories */}
-            {hasTwitterAccounts && (
-              <div className="lg:col-span-1">
-                <TwitterFeed accounts={subcategoryInfo.twitterAccounts} />
+
+      {isMobile ? (
+        /* Vista Móvil - Otras Noticias al final */
+        <div className="flex flex-col gap-8">
+          <div>
+            {articles.featured.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold mb-4">Destacados</h2>
+                <ArticleGrid articles={articles.featured} columns={1} />
+              </div>
+            )}
+
+            {articles.normal.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-semibold mb-4">
+                  Noticias del día
+                </h2>
+                {renderMobileArticlesWithTwitter()}
               </div>
             )}
           </div>
-        )}
-      </div>
-    </>
-  )
-}
 
-export default SubcategoryPage
+          {articles.normal.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
+
+          {articles.complementary.length > 0 && (
+            <div className="mt-8">
+              <h2 className="text-2xl font-semibold mb-4">Otras Noticias</h2>
+              <ArticleGrid articles={articles.complementary} columns={2} />
+            </div>
+          )}
+        </div>
+      ) : (
+        /* Vista Desktop - Layout original */
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            {articles.featured.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-2xl font-semibold mb-4">Destacados</h2>
+                <ArticleGrid articles={articles.featured} columns={1} />
+              </div>
+            )}
+
+            {articles.normal.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-semibold mb-4">
+                  Noticias del día
+                </h2>
+                <ArticleGrid articles={articles.normal} columns={2} />
+              </div>
+            )}
+
+            {articles.normal.length > 0 && (
+              <div className="mt-8">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            )}
+          </div>
+
+          <div className="lg:col-span-1 flex flex-col gap-6 mt-11">
+            {category === "deportes" && twitterAccounts.length > 0 && (
+              <div className="min-h-[600px]">
+                <TwitterFeed accounts={twitterAccounts} />
+              </div>
+            )}
+
+            {articles.complementary.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-semibold mb-4">Otras Noticias</h2>
+                <ArticleGrid articles={articles.complementary} columns={1} />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default SubcategoryPage;

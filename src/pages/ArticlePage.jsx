@@ -65,19 +65,43 @@ const ArticlePage = () => {
     ? getSubcategoryById(category, subcategory)
     : null;
 
-  // Function to render iframes properly
-  const renderContent = (content) => {
-    const iframeRegex = /<iframe.*?src="(.*?)".*?><\/iframe>/g;
-    // Replace iframe tags with the actual embedded video
-    return content.replace(iframeRegex, (match, iframeSrc) => {
-      return `<div class="my-8">
-        <iframe
-          src="${iframeSrc}"
-          title="Embedded Video"
-          style="width: 80%; height: 400px; border-radius: 10px; display: block; margin-left: auto; margin-right: auto;"
-        />
-      </div>`;
+  // Function to render content with proper iframe handling
+  const renderContent = (htmlContent) => {
+    // Create a temporary div to parse the HTML
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlContent;
+
+    // Find all iframes in the content
+    const iframes = tempDiv.querySelectorAll("iframe");
+
+    // Process each iframe
+    iframes.forEach((iframe) => {
+      // Create a container div for the iframe
+      const container = document.createElement("div");
+      container.className = "video-container my-8";
+
+      // Set styles for the container
+      container.style.width = "100%";
+      container.style.maxWidth = "800px";
+      container.style.margin = "0 auto";
+      container.style.position = "relative";
+      container.style.paddingBottom = "56.25%"; // 16:9 aspect ratio
+
+      // Set iframe styles
+      iframe.style.position = "absolute";
+      iframe.style.top = "0";
+      iframe.style.left = "0";
+      iframe.style.width = "100%";
+      iframe.style.height = "100%";
+      iframe.style.borderRadius = "8px";
+      iframe.style.border = "none";
+
+      // Replace iframe with the container containing the iframe
+      iframe.parentNode.replaceChild(container, iframe);
+      container.appendChild(iframe);
     });
+
+    return tempDiv.innerHTML;
   };
 
   return (
@@ -103,6 +127,30 @@ const ArticlePage = () => {
           property="article:section"
           content={categoryInfo?.name || category}
         />
+        <style>{`
+          .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            margin: 2rem auto;
+            max-width: 800px;
+          }
+          
+          .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            border: none;
+          }
+          
+          .prose iframe {
+            margin: 2rem auto !important;
+          }
+        `}</style>
       </Helmet>
 
       <article className="max-w-4xl mx-auto">
@@ -193,7 +241,7 @@ const ArticlePage = () => {
             {/* Render the content with dangerouslySetInnerHTML */}
             <div
               dangerouslySetInnerHTML={{
-                __html: renderContent(content), // Ensure iframe videos are handled correctly
+                __html: renderContent(content),
               }}
             />
           </div>
