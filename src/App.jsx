@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { useState } from "react";
 
 // Layouts
-import MainLayout from "./layouts/MainLayout";
+import MainLayout from "./layouts/MainLayout/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
 
 // Components
@@ -19,7 +19,7 @@ const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
-const AdminArticles = lazy(() => import("./pages/admin/Articles"));
+const AdminArticles = lazy(() => import("./pages/admin/articles/Articles"));
 const AdminCreateArticle = lazy(() => import("./pages/admin/CreateArticle"));
 const AdminEditArticle = lazy(() => import("./pages/admin/EditArticle"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));

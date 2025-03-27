@@ -1,5 +1,5 @@
 import React from "react";
-import ArticleCard from "./ArticleCard";
+import ArticleCard from "./ArticleCard/ArticleCard";
 
 const ArticleGrid = ({ articles, columns = 3 }) => {
   const gridCols = {

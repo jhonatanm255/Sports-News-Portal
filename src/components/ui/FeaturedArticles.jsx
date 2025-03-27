@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getFeaturedArticles } from "../../services/articleService";
-import ArticleCard from "./ArticleCard";
+// import ArticleCard from "./ArticleCard";
 import LoadingSpinner from "./LoadingSpinner";
+import ArticleCard from "./ArticleCard/ArticleCard";
 
 const FeaturedArticles = () => {
   const [articles, setArticles] = useState([]);
