@@ -7,26 +7,25 @@ import { useAuth } from "../../contexts/AuthContext";
 const SearchAdmin = () => {
   const { currentUser } = useAuth();
 
+  // Mostrar ABSOLUTAMENTE NADA si no hay usuario logueado
+  if (!currentUser)
+    return (
+      <div className="flex items-center gap-4 w-full md:w-auto">
+        <SearchBar className="flex-grow md:w-64" />
+      </div>
+    );
+
+  // Mostrar SOLO el botón de admin si hay usuario logueado
   return (
     <div className="flex items-center gap-4 w-full md:w-auto">
       <SearchBar className="flex-grow md:w-64" />
-
-      {/* Enlace al Panel de Administración o Iniciar Sesión */}
-      {currentUser ? (
-        <Link
-          to="/admin"
-          className="text-primary-500 text-3xl border border-primary-500 p-1 rounded-lg hover:text-primary-400 hover:border-primary-400"
-        >
-          <MdAdminPanelSettings />
-        </Link>
-      ) : (
-        <Link
-          to="/login"
-          className="text-gray-600 text-3xl border border-gray-600 p-1 rounded-lg hover:text-primary-500 hover:border-primary-500"
-        >
-          <MdAdminPanelSettings />
-        </Link>
-      )}
+      <Link
+        to="/admin" // Asegúrate que esta ruta lleve al panel real
+        className="text-primary-500 text-3xl border border-primary-500 p-1 rounded-lg hover:text-primary-400 hover:border-primary-400"
+        title="Panel de Administración"
+      >
+        <MdAdminPanelSettings />
+      </Link>
     </div>
   );
 };
