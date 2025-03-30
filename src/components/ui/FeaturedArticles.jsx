@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { getFeaturedArticles } from "../../services/articleService";
-// import ArticleCard from "./ArticleCard";
 import LoadingSpinner from "./LoadingSpinner";
 import ArticleCard from "./ArticleCard/ArticleCard";
 
@@ -13,7 +12,7 @@ const FeaturedArticles = () => {
     const fetchFeaturedArticles = async () => {
       try {
         setLoading(true);
-        const featuredArticles = await getFeaturedArticles(4); // Obtener 5 artículos destacados
+        const featuredArticles = await getFeaturedArticles(4);
         setArticles(featuredArticles);
       } catch (err) {
         console.error("Error fetching featured articles:", err);
@@ -39,36 +38,47 @@ const FeaturedArticles = () => {
     );
   }
 
-  // Dividir los artículos
-  const mainArticles = articles.slice(0, 2); // Primeros dos artículos para la columna izquierda
-  const secondaryArticles = articles.slice(2); // Resto de los artículos para la columna derecha
-
   return (
-    <>
-      <section className="mb-8">
-        <h2 className="text-2xl font-bold mb-6">Destacados</h2>
+    <section className="mb-8">
+      <h2 className="text-2xl font-bold mb-6">Destacados</h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Columna izquierda: Dos artículos en dos filas */}
-          <div className="lg:col-span-2 grid grid-rows-2 gap-6">
-            {mainArticles.map((article) => (
-              <ArticleCard key={article.id} article={article} size="featured" />
-            ))}
-          </div>
-
-          {/* Columna derecha: Dos artículos pequeños */}
-          <div className="lg:col-span-1">
-            <div className="grid grid-cols-1 gap-6">
-              {secondaryArticles.slice(0, 2).map((article) => (
-                <ArticleCard key={article.id} article={article} size="sm" />
-              ))}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        {/* Columna izquierda - Artículos principales */}
+        <div className="lg:col-span-7 flex flex-col gap-4">
+          {articles.slice(0, 2).map((article) => (
+            <div key={article.id} className="flex-1 min-h-0">
+              {" "}
+              {/* Contenedor flexible */}
+              <ArticleCard
+                article={article}
+                size="featured"
+                featuredTag={true}
+                tagPosition="top-right"
+                className="h-full" // Asegura que la card ocupe todo el espacio
+              />
             </div>
-          </div>
+          ))}
         </div>
-        <hr className="mt-8 text-gray-900"/>
-      </section>
-      
-    </>
+
+        {/* Columna derecha - Artículos secundarios */}
+        <div className="lg:col-span-5 flex flex-col gap-4">
+          {articles.slice(2, 4).map((article) => (
+            <div key={article.id} className="flex-1 min-h-0">
+              {" "}
+              {/* Misma estructura que izquierda */}
+              <ArticleCard
+                article={article}
+                size="sm"
+                featuredTag={true}
+                tagPosition="top-right"
+                className="h-full"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <hr className="mt-8 border-gray-200" />
+    </section>
   );
 };
 

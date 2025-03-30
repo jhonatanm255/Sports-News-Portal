@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 const TwitterWidget = ({ account, height = 300 }) => {
   const [loaded, setLoaded] = useState(false);
   const cleanAccount = account.replace("@", "");
-  const nitterUrl = `https://nitter.net/${cleanAccount}/with_replies?theme=dark`;
+  const nitterUrl = `https://nitter.net/${cleanAccount}`;
 
   useEffect(() => {
     setLoaded(false); // Reset al cambiar de cuenta

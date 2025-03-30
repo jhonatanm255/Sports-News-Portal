@@ -10,7 +10,7 @@ const ArticleGrid = ({ articles, columns = 3 }) => {
   };
 
   return (
-    <div className={`grid ${gridCols[columns]} gap-6`}>
+    <div className={`grid ${gridCols[columns]} gap-4`}>
       {articles.map((article) => (
         <ArticleCard key={article.id} article={article} />
       ))}

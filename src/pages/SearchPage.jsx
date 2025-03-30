@@ -3,13 +3,11 @@ import { useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { getAllArticlesForSearch } from "../services/articleService"; // Cambia la importación
 import ArticleGrid from "../components/ui/ArticleGrid";
-import SearchBar from "../components/ui/SearchBar";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q") || "";
-
   const [allArticles, setAllArticles] = useState([]); // Estado para todas las noticias
   const [filteredArticles, setFilteredArticles] = useState([]); // Estado para noticias filtradas
   const [loading, setLoading] = useState(false);
@@ -29,14 +27,13 @@ const SearchPage = () => {
         setLoading(false);
       }
     };
-
     fetchAllArticles();
   }, []);
 
   // 2. Filtrar las noticias cuando cambia el término de búsqueda
   useEffect(() => {
     if (!query.trim()) {
-      setFilteredArticles([]); // Si no hay término de búsqueda, no mostrar resultados
+      setFilteredArticles([]);
       return;
     }
 
@@ -47,7 +44,7 @@ const SearchPage = () => {
         article.content.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredArticles(filtered);
-  }, [query, allArticles]); // Dependencias: query y allArticles
+  }, [query, allArticles]);
 
   return (
     <>
@@ -66,12 +63,6 @@ const SearchPage = () => {
 
       <div>
         <h1 className="text-3xl font-bold mb-6">Búsqueda</h1>
-
-        {/* Barra de búsqueda (opcional, si la quieres mostrar) */}
-        {/* <div className="mb-8">
-          <SearchBar className="max-w-xl mx-auto" />
-        </div> */}
-
         {query && (
           <div className="mb-6">
             <h2 className="text-xl font-medium">
