@@ -98,6 +98,9 @@ const CreateArticle = () => {
               color: "white",
             },
           },
+          clipboard: {
+            matchVisual: false, // Importante para mantener saltos de línea
+          },
         });
       } catch (error) {
         console.error("Error al inicializar módulos Quill:", error);
@@ -108,6 +111,9 @@ const CreateArticle = () => {
             [{ list: "ordered" }, { list: "bullet" }],
             ["link", "image", "video"],
           ],
+          clipboard: {
+            matchVisual: false,
+          },
         });
       }
     };
@@ -124,6 +130,10 @@ const CreateArticle = () => {
   };
 
   const handleContentChange = (content) => {
+    // Limpiar contenido vacío
+    if (content === "<p><br></p>") {
+      content = "<p></p>";
+    }
     setFormData((prev) => ({ ...prev, content }));
   };
 
@@ -214,7 +224,7 @@ const CreateArticle = () => {
       return;
     }
 
-    if (!formData.content.trim()) {
+    if (!formData.content.trim() || formData.content === "<p><br></p>") {
       setError("El contenido es obligatorio");
       return;
     }
@@ -269,44 +279,19 @@ const CreateArticle = () => {
     "width",
   ];
 
-  const CustomContent = ({ content }) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(content, "text/html");
-    const mediaElements = doc.querySelectorAll("img, iframe");
-
-    if (mediaElements.length === 0) {
-      return <div dangerouslySetInnerHTML={{ __html: content }} />;
-    }
-
-    let currentIndex = 0;
-    const elements = Array.from(doc.body.childNodes).map((node, i) => {
-      if (node.nodeName === "IMG" || node.nodeName === "IFRAME") {
-        const index = currentIndex;
-        currentIndex++;
-
-        return (
-          <div key={`media-${i}`} className="media-container relative group">
-            <div dangerouslySetInnerHTML={{ __html: node.outerHTML }} />
-            <button
-              className="delete-media-btn absolute -top-3 -right-3 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
-              onClick={() => handleDeleteMedia(index)}
-              title="Eliminar este elemento"
-            >
-              ×
-            </button>
-          </div>
-        );
-      }
-
-      return (
-        <div
-          key={`node-${i}`}
-          dangerouslySetInnerHTML={{ __html: node.outerHTML }}
-        />
-      );
-    });
-
-    return <div className="space-y-4">{elements}</div>;
+  const ArticleContent = ({ content }) => {
+    return (
+      <div 
+        className="ql-editor"
+        style={{
+          whiteSpace: "pre-wrap",
+          wordBreak: "break-word",
+          overflowWrap: "break-word",
+          maxWidth: "100%",
+        }}
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    );
   };
 
   return (
@@ -316,6 +301,17 @@ const CreateArticle = () => {
         <style>{`
           .ql-editor {
             min-height: 300px;
+            white-space: pre-wrap !important;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+          }
+          
+          .ql-editor p {
+            margin-bottom: 1em !important;
+          }
+          
+          .ql-editor p:last-child {
+            margin-bottom: 0 !important;
           }
           
           .ql-editor img {
@@ -571,6 +567,11 @@ const CreateArticle = () => {
                 placeholder="Escribe el contenido del artículo aquí..."
                 className="bg-white"
                 readOnly={isSubmitting}
+                style={{
+                  minHeight: "300px",
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-word",
+                }}
               />
             ) : (
               <div className="p-4 bg-gray-100 rounded-lg text-center">
@@ -580,11 +581,16 @@ const CreateArticle = () => {
             )}
 
             {/* Vista previa con botones de eliminar */}
-            {formData.content && (
+            {formData.content && formData.content !== "<p><br></p>" && (
               <div className="mt-4 p-4 border rounded-lg">
                 <h3 className="text-sm font-medium mb-2">Vista previa:</h3>
-                <div className="ql-editor">
-                  <CustomContent content={formData.content} />
+                <div style={{
+                  maxWidth: "100%",
+                  overflow: "hidden",
+                  wordBreak: "break-word",
+                  whiteSpace: "pre-wrap"
+                }}>
+                  <ArticleContent content={formData.content} />
                 </div>
               </div>
             )}
