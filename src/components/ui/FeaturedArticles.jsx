@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getFeaturedArticles } from "../../services/articleService";
+import { getFeaturedArticles } from "../../services/index";
 import LoadingSpinner from "./LoadingSpinner";
 import ArticleCard from "./ArticleCard/ArticleCard";
 
@@ -54,7 +54,7 @@ const FeaturedArticles = () => {
                 size="featured"
                 featuredTag={true}
                 tagPosition="top-right"
-                className="h-full" // Asegura que la card ocupe todo el espacio
+                className="h-full"
               />
             </div>
           ))}
@@ -65,7 +65,6 @@ const FeaturedArticles = () => {
           {articles.slice(2, 4).map((article) => (
             <div key={article.id} className="flex-1 min-h-0">
               {" "}
-              {/* Misma estructura que izquierda */}
               <ArticleCard
                 article={article}
                 size="sm"

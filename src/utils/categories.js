@@ -1,14 +1,13 @@
-// Define all categories and subcategories
 const categories = [
   {
     id: 'noticias',
     name: 'Noticias',
     subcategories: [
-      { id: 'politica', name: 'Política' },
-      { id: 'economia', name: 'Economía' },
-      { id: 'internacional', name: 'Internacional' },
-      { id: 'tecnologia', name: 'Tecnología' },
-      { id: 'ciencia', name: 'Ciencia' }
+      // { id: 'politica', name: 'Política' },
+      // { id: 'economia', name: 'Economía' },
+      // { id: 'internacional', name: 'Internacional' },
+      // { id: 'tecnologia', name: 'Tecnología' },
+      // { id: 'ciencia', name: 'Ciencia' }
     ]
   },
   {
@@ -25,31 +24,27 @@ const categories = [
     id: 'farandula',
     name: 'Farándula',
     subcategories: [
-      { id: 'celebridades', name: 'Celebridades' },
-      { id: 'cine', name: 'Cine' },
-      { id: 'television', name: 'Televisión' },
+      // { id: 'celebridades', name: 'Celebridades' },
+      // { id: 'cine', name: 'Cine' },
+      { id: 'conciertos', name: 'Conciertos' },
       { id: 'musica', name: 'Música' },
-      { id: 'moda', name: 'Moda' }
+      // { id: 'moda', name: 'Moda' }
     ]
   },
 ]
 
 export default categories
 
-// Helper function to get category by ID
 export const getCategoryById = (categoryId) => {
   return categories.find(category => category.id === categoryId)
 }
 
-// Helper function to get subcategory by ID within a category
 export const getSubcategoryById = (categoryId, subcategoryId) => {
   const category = getCategoryById(categoryId)
   if (!category) return null
   
   return category.subcategories.find(subcategory => subcategory.id === subcategoryId)
 }
-
-// Helper function to get all categories and subcategories as flat array
 export const getAllCategoriesFlat = () => {
   return categories.flatMap(category => {
     return [

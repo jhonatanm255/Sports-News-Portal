@@ -6,7 +6,7 @@ const TwitterWidget = ({ account, height = 300 }) => {
   const nitterUrl = `https://nitter.net/${cleanAccount}`;
 
   useEffect(() => {
-    setLoaded(false); // Reset al cambiar de cuenta
+    setLoaded(false);
   }, [account]);
 
   return (

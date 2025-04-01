@@ -7,7 +7,7 @@ import { useArticles } from "./useArticles";
 import ArticlesHeader from "./ArticlesHeader";
 import ArticlesTable from "./ArticlesTable";
 
-const ARTICLES_PER_PAGE = 10;
+const ARTICLES_PER_PAGE = 40;
 
 const Articles = () => {
   const {

@@ -3,15 +3,10 @@ import { lazy, Suspense, useEffect } from "react";
 import { useAuth } from "./contexts/AuthContext";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
-
-// Layouts
 import MainLayout from "./layouts/MainLayout/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
-
-// Components
 import LoadingSpinner from "./components/ui/LoadingSpinner";
 
-// Lazy loaded pages
 const HomePage = lazy(() => import("./pages/HomePage"));
 const CategoryPage = lazy(() => import("./pages/CategoryPage"));
 const SubcategoryPage = lazy(() => import("./pages/SubcategoryPage"));
@@ -24,7 +19,6 @@ const AdminCreateArticle = lazy(() => import("./pages/admin/CreateArticle"));
 const AdminEditArticle = lazy(() => import("./pages/admin/EditArticle"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
-// Componente para forzar recarga al cambiar parámetros
 const ReloadOnParamChange = ({ children }) => {
   const location = useLocation();
   const [key, setKey] = useState(0);

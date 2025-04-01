@@ -16,9 +16,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // Mock login for development without Firebase
   const mockLogin = (email, password) => {
-    // For development, accept any email/password with admin@example.com
     if (email === "newsmexico054@gmail.com") {
       const mockUser = {
         uid: "mock-user-id",
@@ -34,7 +32,6 @@ export function AuthProvider({ children }) {
     return Promise.reject(new Error('Invalid email or password'))
   }
   
-  // Mock logout
   const mockLogout = () => {
     setCurrentUser(null)
     localStorage.removeItem('mockUser')
@@ -42,7 +39,6 @@ export function AuthProvider({ children }) {
   }
 
   function login(email, password) {
-    // Use mock login if in development mode
     if (window.mockMode) {
       return mockLogin(email, password)
     }
@@ -51,7 +47,6 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
-    // Use mock logout if in development mode
     if (window.mockMode) {
       return mockLogout()
     }
@@ -60,9 +55,7 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    // Check for mock mode
     if (window.mockMode) {
-      // Check if we have a stored mock user
       const storedUser = localStorage.getItem('mockUser')
       if (storedUser) {
         setCurrentUser(JSON.parse(storedUser))
@@ -71,7 +64,6 @@ export function AuthProvider({ children }) {
       return
     }
     
-    // Use Firebase auth state change listener
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user)
       setLoading(false)

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { getComplementaryArticles } from "../../services/articleService";
+import { getComplementaryArticles } from "../../services/index";
 import ArticleGrid from "./ArticleGrid";
 import LoadingSpinner from "./LoadingSpinner";
 
@@ -21,7 +21,6 @@ const OtherArticles = ({ limit = 60, excludeIds = [] }) => {
         const complementaryArticles = await getComplementaryArticles(
           limit + excludeIds.length
         );
-        console.log("Complementary Articles:", complementaryArticles); // Depuración
 
         const filteredArticles = complementaryArticles
           .filter((article) => !excludeIds.includes(article.id))

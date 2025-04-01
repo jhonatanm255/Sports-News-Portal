@@ -3,7 +3,7 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 
 exports.autoDeleteArticles = functions.pubsub
-  .schedule("every 1 minutes") // Verifica cada minuto
+  .schedule("every 168 hours")
   .timeZone("America/Mexico_City")
   .onRun(async (context) => {
     const now = admin.firestore.Timestamp.now();
@@ -58,3 +58,10 @@ exports.autoDeleteArticles = functions.pubsub
       return null;
     }
   });
+
+
+
+
+
+
+

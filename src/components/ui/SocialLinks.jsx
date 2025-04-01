@@ -9,7 +9,6 @@ import {
 const SocialLinks = () => {
   return (
     <div className="flex space-x-4">
-      {/* Facebook */}
       <a
         href="https://www.facebook.com/profile.php?id=61571413462228"
         target="_blank"
@@ -20,7 +19,6 @@ const SocialLinks = () => {
         <FontAwesomeIcon icon={faFacebookF} className="text-xl" />
       </a>
 
-      {/* TikTok */}
       <a
         href="https://www.tiktok.com/@lanewssports?_t=ZT-8udOwwuRhq2&_r=1"
         target="_blank"
@@ -31,7 +29,6 @@ const SocialLinks = () => {
         <FontAwesomeIcon icon={faTiktok} className="text-xl" />
       </a>
 
-      {/* Instagram */}
       <a
         href="https://www.instagram.com/lanewssports?igsh=MzRlODBiNWFlZA%3D%3D"
         target="_blank"
@@ -42,7 +39,6 @@ const SocialLinks = () => {
         <FontAwesomeIcon icon={faInstagram} className="text-xl" />
       </a>
 
-      {/* X (Twitter) */}
       <a
         href="https://x.com/LANEWSSPORTS1?t=jWDZnaK0goGI3NjIgFpbVw&s=08"
         target="_blank"

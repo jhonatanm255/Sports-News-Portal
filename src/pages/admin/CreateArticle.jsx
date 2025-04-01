@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { createArticle, uploadImage } from "../../services/articleService";
+import { createArticle, uploadImage } from "../../services/index";
 import { getAllCategoriesFlat } from "../../utils/categories";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
 import toast from "react-hot-toast";
@@ -187,7 +187,6 @@ const CreateArticle = () => {
 
     if (quillRef.current) {
       const quill = quillRef.current.getEditor();
-      // Asegurarse de que hay una selección activa
       const range = quill.getSelection(true) || {
         index: quill.getLength(),
         length: 0,

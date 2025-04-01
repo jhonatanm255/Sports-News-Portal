@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { getAllArticles, getFeaturedArticles } from '../../services/articleService'
+import { getAllArticles, getFeaturedArticles } from '../../services/index'
 import LoadingSpinner from '../../components/ui/LoadingSpinner'
 
 const Dashboard = () => {

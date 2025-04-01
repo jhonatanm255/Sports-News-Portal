@@ -77,7 +77,6 @@ const AdminLayout = () => {
         </div>
       </aside>
       
-      {/* Main Content */}
       <main className="flex-grow p-6">
         <Outlet />
       </main>

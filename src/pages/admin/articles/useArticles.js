@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getAllArticles, deleteArticle } from "../../../services/articleService";
+import { getAllArticles, deleteArticle } from "../../../services/index";
 import toast from "react-hot-toast";
 
 export const useArticles = (articlesPerPage) => {

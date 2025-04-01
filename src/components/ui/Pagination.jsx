@@ -1,47 +1,37 @@
 import React from "react";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  // Generate page numbers array
   const getPageNumbers = () => {
     const pageNumbers = [];
     const maxPagesToShow = 5;
 
     if (totalPages <= maxPagesToShow) {
-      // Show all pages if total pages is less than max pages to show
       for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
       }
     } else {
-      // Always show first page
       pageNumbers.push(1);
-
-      // Calculate start and end of page numbers to show
       let start = Math.max(2, currentPage - 1);
       let end = Math.min(totalPages - 1, currentPage + 1);
 
-      // Adjust if at the beginning or end
       if (currentPage <= 2) {
         end = Math.min(totalPages - 1, maxPagesToShow - 1);
       } else if (currentPage >= totalPages - 1) {
         start = Math.max(2, totalPages - maxPagesToShow + 2);
       }
 
-      // Add ellipsis if needed
       if (start > 2) {
         pageNumbers.push("...");
       }
 
-      // Add middle pages
       for (let i = start; i <= end; i++) {
         pageNumbers.push(i);
       }
 
-      // Add ellipsis if needed
       if (end < totalPages - 1) {
         pageNumbers.push("...");
       }
 
-      // Always show last page
       pageNumbers.push(totalPages);
     }
 
@@ -50,17 +40,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
   const pageNumbers = getPageNumbers();
 
-  console.log("currentPage:", currentPage);
-  console.log("totalPages:", totalPages);
-  console.log("pageNumbers:", pageNumbers);
-
   return (
     <div className="flex justify-center mt-8">
       <nav
         className="inline-flex rounded-md shadow-sm -space-x-px"
         aria-label="Pagination"
       >
-        {/* Previous button */}
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
@@ -86,7 +71,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           </svg>
         </button>
 
-        {/* Page numbers */}
         {pageNumbers.map((page, index) =>
           page === "..." ? (
             <span
@@ -110,7 +94,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           )
         )}
 
-        {/* Next button */}
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}

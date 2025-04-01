@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { getLatestArticles } from "../../services/articleService";
+import { getLatestArticles } from "../../services/index";
 import ArticleGrid from "./ArticleGrid";
 import LoadingSpinner from "./LoadingSpinner";
 
@@ -24,14 +24,12 @@ const LatestArticles = ({ limit = 20, excludeIds = [] }) => {
         const latestArticles = await getLatestArticles(
           limit + excludeIds.length
         );
-        console.log("Latest Articles (raw):", latestArticles); // Depuración
 
         // Filtrar artículos excluidos
         const filteredArticles = latestArticles
           .filter((article) => !excludeIds.includes(article.id))
           .slice(0, limit);
 
-        console.log("Filtered Articles:", filteredArticles); // Depuración
         setArticles(filteredArticles);
       } catch (err) {
         console.error("Error fetching latest articles:", err);

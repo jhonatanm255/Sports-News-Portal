@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { getAllArticlesForSearch } from "../services/articleService"; // Cambia la importación
+import { getAllArticlesForSearch } from "../services/index";
 import ArticleGrid from "../components/ui/ArticleGrid";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q") || "";
-  const [allArticles, setAllArticles] = useState([]); // Estado para todas las noticias
-  const [filteredArticles, setFilteredArticles] = useState([]); // Estado para noticias filtradas
+  const [allArticles, setAllArticles] = useState([]);
+  const [filteredArticles, setFilteredArticles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // 1. Descargar todas las noticias al cargar la página
   useEffect(() => {
     const fetchAllArticles = async () => {
       try {
         setLoading(true);
-        const articles = await getAllArticlesForSearch(); // Usa la nueva función
+        const articles = await getAllArticlesForSearch();
         setAllArticles(articles);
       } catch (err) {
         console.error("Error fetching articles:", err);
@@ -30,14 +29,12 @@ const SearchPage = () => {
     fetchAllArticles();
   }, []);
 
-  // 2. Filtrar las noticias cuando cambia el término de búsqueda
   useEffect(() => {
     if (!query.trim()) {
       setFilteredArticles([]);
       return;
     }
 
-    // Filtrar noticias en el frontend
     const filtered = allArticles.filter(
       (article) =>
         article.title.toLowerCase().includes(query.toLowerCase()) ||

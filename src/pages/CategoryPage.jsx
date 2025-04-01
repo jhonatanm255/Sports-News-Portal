@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { getArticlesByCategory } from "../services/articleService";
+import { getArticlesByCategory } from "../services/index";
 import ArticleGrid from "../components/ui/ArticleGrid";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import TwitterFeed from "../components/ui/TwitterFeed";

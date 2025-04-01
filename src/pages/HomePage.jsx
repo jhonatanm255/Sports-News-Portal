@@ -21,7 +21,6 @@ const HomePage = () => {
       );
     }
 
-    // Suponiendo que obtenemos los artículos reales
     const articles = Array.from({ length: 9 }, (_, i) => ({
       id: i,
       type: "article",

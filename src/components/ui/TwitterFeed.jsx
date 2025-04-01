@@ -21,7 +21,6 @@ const TwitterFeed = ({
 
   if (!accounts || accounts.length === 0) return null;
 
-  // Altura dinámica basada en el dispositivo y modo
   const containerHeight =
     isMobile || singleAccountMode ? mobileHeight : desktopHeight;
   const widgetHeight =
