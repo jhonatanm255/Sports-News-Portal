@@ -467,7 +467,7 @@ const CreateArticle = () => {
               />
               <label
                 htmlFor="featured"
-                className="ml-2 block text-sm text-gray-900"
+                className="ml-2 block text-sm py-1 px-4 bg-green-50 rounded-full text-green-600"
               >
                 Marcar como destacado
               </label>
@@ -485,9 +485,9 @@ const CreateArticle = () => {
               />
               <label
                 htmlFor="autoDelete"
-                className="ml-2 block text-sm text-gray-900"
+                className="ml-2 block text-sm py-1 px-4 bg-red-50 rounded-full text-red-600"
               >
-                Auto-eliminar después de 30 días
+                Auto-eliminar después de 1 año
               </label>
             </div>
 
@@ -503,7 +503,7 @@ const CreateArticle = () => {
               />
               <label
                 htmlFor="is_complementary"
-                className="ml-2 block text-sm text-gray-900"
+                className="ml-2 block text-sm py-1 px-4 bg-blue-50 rounded-full text-blue-600"
               >
                 Marcar como complementario
               </label>
