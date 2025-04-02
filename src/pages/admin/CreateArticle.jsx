@@ -377,6 +377,46 @@ const CreateArticle = () => {
           </button>
         </div>
 
+          {/* INDICATIONS */}
+        <div className="mb-8 p-4 bg-orange-50 rounded-lg shadow-lg text-sm">
+          <h3 className="font-semibold text-gray-700">Indicaciones para crear una noticia</h3>
+          <p>
+            1. Colocar el título principal de la noticia en el campo de
+            "Título".
+          </p>
+          <p>2. Seleccionar una categoría y subcategoría, si la hubiera.</p>
+          <p>3. Opciones para las noticias:</p>
+          <ul>
+            <li className="ml-4">
+              <strong>Marcar como destacado:</strong> Esta opción coloca la
+              noticia entre las 4 primeras y la card será más grande.
+            </li>
+            <li className="ml-4">
+              <strong>Auto-eliminar después de 1 año:</strong> Esta opción
+              eliminará automáticamente la noticia después de un año de su
+              publicación.
+            </li>
+            <li className="ml-4">
+              <strong>Marcar como complementario:</strong> Esta opción coloca la
+              noticia debajo del widget de X y la card será la más pequeña.
+            </li>
+          </ul>
+          <p>4. Agregar una imagen principal, tamaño ideal 600x600 px.</p>
+          <p>
+            5. Contenido: Agregar el contenido de la noticia en el editor de
+            texto. Aquí tiene varias opciones para la fuente de texto. También
+            podrá insertar imágenes y videos por medio de un enlace de YouTube,
+            seleccionando las opciones en la barra de menú de la parte superior
+            del editor.
+          </p>
+          <p>
+            6. Previsualización: En esta sección podrá previsualizar la noticia
+            antes de publicarla. En la sección de artículos también podrá editar
+            y/o eliminar las noticias manualmente.
+          </p>
+        </div>
+        {/* END INDICATIONS */}
+
         {error && (
           <div className="bg-red-50 text-red-600 p-4 rounded-md mb-6">
             {error}
@@ -584,12 +624,14 @@ const CreateArticle = () => {
             {formData.content && formData.content !== "<p><br></p>" && (
               <div className="mt-4 p-4 border rounded-lg">
                 <h3 className="text-sm font-medium mb-2">Vista previa:</h3>
-                <div style={{
-                  maxWidth: "100%",
-                  overflow: "hidden",
-                  wordBreak: "break-word",
-                  whiteSpace: "pre-wrap"
-                }}>
+                <div
+                  style={{
+                    maxWidth: "100%",
+                    overflow: "hidden",
+                    wordBreak: "break-word",
+                    whiteSpace: "pre-wrap",
+                  }}
+                >
                   <ArticleContent content={formData.content} />
                 </div>
               </div>
